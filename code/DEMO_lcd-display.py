@@ -2,9 +2,26 @@
 import time
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+import glob
+import os
+
+def detect_lcd():
+    for path in glob.glob("/sys/class/graphics/fb*/name"):
+        with open(path) as f:
+            name = f.read().strip()
+
+        if name == "fb_ili9486":
+            number = os.path.basename(os.path.dirname(path))
+            device = f"/dev/{number}"
+
+            if os.path.exists(device):
+                print(f"LCD detected: {name} at {device}")
+                return device
+
+    raise RuntimeError("ILI9486 LCD framebuffer not found")
 
 WIDTH, HEIGHT = 480, 320
-FRAMEBUFFER = "/dev/fb0"
+FRAMEBUFFER = detect_lcd()
 
 def draw_screen(counter):
     image = Image.new("RGB", (WIDTH, HEIGHT), (20, 25, 35))
