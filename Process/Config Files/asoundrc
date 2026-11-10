@@ -1,0 +1,19 @@
+# Define the hardware card slave layer
+pcm_slave.mic_hardware {
+    pcm "hw:2,0"           # <-- CHANGE THIS to your actual mic card and device ID!
+    format S16_LE          # Matches the 16-bit format Pocketsphinx expects
+    channels 1             # Mono capture
+    rate 44100             # Change this to your mic's native rate if it requires 48000
+}
+
+# Define a virtual "plug" adapter that handles rate conversion
+pcm.pocketsphinx_mic {
+    type plug
+    slave mic_hardware
+}
+
+# Redirect your default recording system to use our new virtual plug
+pcm.!default {
+    type copy
+    slave.pcm "pocketsphinx_mic"
+}
