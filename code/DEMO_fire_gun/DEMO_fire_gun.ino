@@ -14,7 +14,7 @@ void setSafety(bool value) {
     safe = value;
 }
 
-String fire() {
+String fire(int n) {
 	if (safe) {
 			return "\"error\":\"safety_on\"";
 	}
@@ -23,11 +23,15 @@ String fire() {
 	digitalWrite(SPINNER, HIGH);
 	delay(500);
 	digitalWrite(PUSHER, HIGH);
-	delay(100);
+	delay(150*n-50);
 	digitalWrite(PUSHER, LOW);
 	delay(500);
 	digitalWrite(SPINNER, LOW);
 	return "\"result\":\"fire_success\"";
+}
+
+String fire() {
+	fire(1);
 }
 
 void setup() {
@@ -54,7 +58,7 @@ void loop() {
 			setSafety(true);
 		} else if (instruction == "safety off") {
 			setSafety(false);
-		} else {
+		}else {
 			Serial.println(instruction);
 		}
 	}
