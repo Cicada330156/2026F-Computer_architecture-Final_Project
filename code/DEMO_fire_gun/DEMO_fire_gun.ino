@@ -58,6 +58,13 @@ void loop() {
 			setSafety(true);
 		} else if (instruction == "safety off") {
 			setSafety(false);
+		} else if (instruction == "freq test") {
+			digitalWrite(SPINNER, HIGH);
+			delay(500);
+			digitalWrite(PUSHER, HIGH);
+			delay(10000);
+			digitalWrite(PUSHER, LOW);
+			digitalWrite(SPINNER, LOW);
 		}else {
 			Serial.println(instruction);
 		}
