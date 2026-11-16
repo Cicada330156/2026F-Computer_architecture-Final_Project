@@ -29,3 +29,17 @@ We created a schematic detailing the layout with the relays, and soldered on jum
 <!--TODO: Rewire so that pusher motor only gets power if the spinner motors are getting power -->
 
 ![The new wiring to the pusher motor board, through the relay](assets/20261110_023123_Pusher_Switch-Relay_and_Switch_Cooperative_Layout.png)
+
+## The Software
+
+### PocketSphinx
+
+Pocketsphinx initial install went smoothly. We did have to separately install PortAudio, which was not in the initial instructions we followed, but that information is available in the docs. We also had to configure an adapter from the [USB mic's](Products/products.md#the-mic) 44+khz to PocketSphinx's expected 16khz in the [~/.asoundrc file](https://github.com/Cicada330156/2026F-Computer_architecture-Final_Project/commit/fc6392ce746a88b3e099bfd20c49b9af966e1481).
+
+### The Display
+
+[The display](Products/products.md#the-screen) came with a card linking to [their website](https://hosyond.com/), which contained [driver install instructions](https://special-watercress-61d.notion.site/3-5inch-RPi-Display-2a9108be7df181468273ebd1d8175039) that recommended using [https://github.com/goodtft/LCD-show.git](https://github.com/goodtft/LCD-show.git). We used a series of ChatGPT sessions to debug issues, which it summarizes as:
+
+> The Raspberry Pi 3's Hosyond 3.5-inch ILI9486 display initially failed to initialize correctly because the legacy LCD-show installation used outdated configuration settings, disabled KMS, and did not properly install or load the required TFT device-tree overlay. We corrected the SPI and display-driver configuration, enabled the `tft35a` overlay, and confirmed that the kernel recognized the LCD through the `fb_ili9486` driver, creating a 480×320 framebuffer alongside the HDMI framebuffer. We then investigated mirroring the Wayland desktop onto the LCD using framebuffer copying, screenshots with `grim`, and `wl-mirror`, but screenshot capture took approximately 2.5 seconds per frame, making it impractical for responsive mirroring. Instead, we switched to direct framebuffer output, verified that RGB565 pixel data could be written to the LCD, and developed a working Python program using Pillow and NumPy to draw custom graphics independently of the desktop. Finally, we [] implemented automatic LCD framebuffer detection by searching `/sys/class/graphics/` for the `fb_ili9486` driver, avoiding reliance on a framebuffer number that can change between boots.
+
+The site also provided OS versions with built-in drivers, which we initially did not use because we already had an OS installed, though we ended up reinstalling it (the one without a driver) when the initial failed install attempt bricked all display outputs and SSHing in was not attainable.
