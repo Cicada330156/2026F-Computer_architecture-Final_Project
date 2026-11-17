@@ -58,7 +58,7 @@ String rapidFire() {
 
 String halt(int n) {
 	digitalWrite(PUSHER, LOW);
-	delay(500);
+	delay(550*n-50);
 	digitalWrite(SPINNER, LOW);
 	delay(500);
 	return "\"result\":\"halt_success\"";
