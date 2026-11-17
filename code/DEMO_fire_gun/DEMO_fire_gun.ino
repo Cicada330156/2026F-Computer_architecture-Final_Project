@@ -34,6 +34,40 @@ String fire() {
 	fire(1);
 }
 
+String rapidFire(int n) {
+	if (safe) {
+		return "\"error\":\"safety_on\"";
+	}
+
+	digitalWrite(SPINNER, HIGH);
+	delay(500);
+
+	while (true) {
+		digitalWrite(PUSHER, HIGH);
+		delay(100*n-50);
+		digitalWrite(PUSHER, LOW);
+		delay(100*n-50);
+	}
+
+	return "\"result\":\"fire_success\"";
+}
+
+String rapidFire() {
+	rapidFire(1);
+}
+
+String halt(int n) {
+	digitalWrite(PUSHER, LOW);
+	delay(500);
+	digitalWrite(SPINNER, LOW);
+	delay(500);
+	return "\"result\":\"halt_success\"";
+}
+
+String halt() {
+	halt(1);
+}
+
 void setup() {
 	Serial.begin(9600);
 	setSafety(false);
@@ -54,6 +88,10 @@ void loop() {
 		instruction.trim();
 		if (instruction == "fire") {
 			Serial.println(fire());
+		} else if (instruction == "rapid fire") {
+			Serial.println(rapidFire());
+		} else if (instruction == "halt") {
+			Serial.println(halt());
 		} else if (instruction == "safety on") {
 			setSafety(true);
 		} else if (instruction == "safety off") {
