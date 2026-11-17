@@ -86,8 +86,10 @@ phrase_commands = {
     "shoot": "fire",
     "safety on": "safety on",
     "turn on safety": "safety on",
+    "turn on the safety": "safety on",
     "safety off": "safety off",
     "turn off safety": "safety off",
+    "turn off the safety": "safety off"
 }
 
 # 2. Main NonBlocking App Loop
