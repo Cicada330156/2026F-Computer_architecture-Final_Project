@@ -101,7 +101,11 @@ try:
             recognized_text = speech_queue.get_nowait()
             print(f"\n[Main] Received Speech: '{recognized_text}'")
 
-            command = phrase_commands.get(recognized_text.lower().strip())
+            normalized_text = recognized_text.lower().strip()
+            command = next(
+                (mapped_command for phrase, mapped_command in phrase_commands.items() if phrase in normalized_text),
+                None
+            )
             if command:
                 arduino_tx_queue.put(command)
                 print(f"[Main] Queued Arduino command: {command}")
